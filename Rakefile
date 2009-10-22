@@ -15,7 +15,7 @@ begin
     gem.homepage = "http://github.com/jrun/rubygems-proxy-server"
     gem.authors = ["jrun"]
     gem.add_dependency 'rack', '>= 1.0.1'
-    gem.add_dependency "mongrel", ">= 1.1.5"
+    gem.add_dependency "sinatra", ">= 0.9.4"
     gem.add_development_dependency "rspec", ">= 1.2.9"
     gem.files = FileList['[a-zA-Z]*', 'bin/**/*', 'lib/**/*', 'spec/**/*']
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
@@ -55,7 +55,7 @@ task :repackage do
   if gem_installed?
     system "gem uninstall rubygems-proxy-server"
   end
-  system "gem install -l #{File.dirname(__FILE__)}/pkg/rubygems-proxy-server-#{ProxyServer::VERSION}"
+  system "gem install --no-rdoc --no-ri -l #{File.dirname(__FILE__)}/pkg/rubygems-proxy-server-#{ProxyServer::VERSION}"
 end
 
 def gem_installed?
