@@ -1,7 +1,7 @@
 require 'rubygems/indexer'
 require 'sinatra/base'
-require 'pathname'
 require 'net/http'
+require 'pathname'
 
 class App < Sinatra::Base
   enable :run
