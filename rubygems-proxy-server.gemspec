@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rubygems-proxy-server}
-  s.version = "0.0.0"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["jrun"]
-  s.date = %q{2009-10-21}
+  s.date = %q{2009-10-22}
   s.description = %q{See the summary}
   s.email = %q{jeremy.burks@gmail.com}
   s.extra_rdoc_files = [
@@ -21,33 +21,49 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
-     "lib/rubygems-proxy-server.rb",
+     "lib/proxy_app.rb",
      "lib/rubygems_plugin.rb",
      "rubygems-proxy-server.gemspec",
      "spec/rubygems-proxy-server_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
   ]
+  s.has_rdoc = true
   s.homepage = %q{http://github.com/jrun/rubygems-proxy-server}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.0}
   s.summary = %q{Conceptually modeled off of maven-proxy}
   s.test_files = [
-    "spec/spec_helper.rb",
-     "spec/rubygems-proxy-server_spec.rb"
+    "spec/rubygems-proxy-server_spec.rb",
+     "spec/spec_helper.rb"
   ]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
-    s.specification_version = 3
+    s.specification_version = 2
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<rack>, [">= 1.0.1"])
+      s.add_runtime_dependency(%q<sinatra>, [">= 0.9.4"])
+      s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
+      s.add_runtime_dependency(%q<rack>, [">= 1.0.1"])
+      s.add_runtime_dependency(%q<sinatra>, [">= 0.9.4"])
       s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
     else
+      s.add_dependency(%q<rack>, [">= 1.0.1"])
+      s.add_dependency(%q<sinatra>, [">= 0.9.4"])
+      s.add_dependency(%q<rspec>, [">= 1.2.9"])
+      s.add_dependency(%q<rack>, [">= 1.0.1"])
+      s.add_dependency(%q<sinatra>, [">= 0.9.4"])
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
     end
   else
+    s.add_dependency(%q<rack>, [">= 1.0.1"])
+    s.add_dependency(%q<sinatra>, [">= 0.9.4"])
+    s.add_dependency(%q<rspec>, [">= 1.2.9"])
+    s.add_dependency(%q<rack>, [">= 1.0.1"])
+    s.add_dependency(%q<sinatra>, [">= 0.9.4"])
     s.add_dependency(%q<rspec>, [">= 1.2.9"])
   end
 end

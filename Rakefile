@@ -1,9 +1,7 @@
 require 'rubygems'
 require 'rake'
 
-module ProxyServer
-  VERSION = File.exist?('VERSION') ? File.read('VERSION') : ""
-end
+PROXY_SERVER_VERSION = File.exist?('VERSION') ? File.read('VERSION') : ""
 
 begin
   require 'jeweler'
@@ -18,7 +16,6 @@ begin
     gem.add_dependency "sinatra", ">= 0.9.4"
     gem.add_development_dependency "rspec", ">= 1.2.9"
     gem.files = FileList['[a-zA-Z]*', 'bin/**/*', 'lib/**/*', 'spec/**/*']
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
@@ -44,7 +41,7 @@ task :default => :spec
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "rubygems-proxy-server #{ProxyServer::VERSION}"
+  rdoc.title = "rubygems-proxy-server #{PROXY_SERVER_VERSION}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
@@ -55,9 +52,10 @@ task :repackage do
   if gem_installed?
     system "gem uninstall rubygems-proxy-server"
   end
-  system "gem install --no-rdoc --no-ri -l #{File.dirname(__FILE__)}/pkg/rubygems-proxy-server-#{ProxyServer::VERSION}"
+  system "gem install --no-rdoc --no-ri -l #{File.dirname(__FILE__)}/pkg/rubygems-proxy-server-#{PROXY_SERVER_VERSION}"
 end
 
 def gem_installed?
-  system "gem list rubygems-proxy-server -l" =~ /rubygems-proxy-server-#{ProxyServer::VERSION}/
+  (system("gem list rubygems-proxy-server -l") || "")  =~
+    /rubygems-proxy-server-#{PROXY_SERVER_VERSION}/
 end
