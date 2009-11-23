@@ -4,8 +4,10 @@ require 'proxy_app'
 class Gem::Commands::ProxyServerCommand < Gem::Command
   include Gem::LocalRemoteOptions
 
-  PROXY_DEFAULT_GEM_SOURCE = "http://gems.rubyforge.org"
+  PROXY_DEFAULT_GEM_SOURCE = "http://gemcutter.org"
   PROXY_DEFAULT_PORT = 3027
+  
+  NIL_DIR_MSG = "specify the directory containing the gems subdir using -d"
   
   def initialize
     super "proxy_server", summary
@@ -53,7 +55,10 @@ for that directory.
   
   def execute
     dir = options[:directory]
-    if not File.exist?(dir) or not File.directory?(dir) then
+    if dir.nil?
+      alert_error NIL_DIR_MSG
+      terminate_interaction 1
+    elsif not File.exist?(dir) or not File.directory?(dir)
       alert_error "unknown directory name #{dir}."
       terminate_interaction 1
     else

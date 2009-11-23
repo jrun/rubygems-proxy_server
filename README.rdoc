@@ -1,6 +1,6 @@
 = rubygems-proxy-server
 
-Description goes here.
+A gem source proxy.
 
 == Note on Patches/Pull Requests
  
