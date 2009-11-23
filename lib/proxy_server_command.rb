@@ -7,7 +7,7 @@ class Gem::Commands::ProxyServerCommand < Gem::Command
   PROXY_DEFAULT_GEM_SOURCE = "http://gemcutter.org"
   PROXY_DEFAULT_PORT = 3027
   
-  NIL_DIR_MSG = "specify the directory containing the gems subdir using -d"
+  NIL_DIR_MSG = "missing -d, --directory option"
   
   def initialize
     super "proxy_server", summary
