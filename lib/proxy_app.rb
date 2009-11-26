@@ -75,12 +75,15 @@ class ProxyApp < Sinatra::Base
     tmpfile
   end
   
+  # There is a bug in JRuby [1]  with regard to renaming files
+  # across devices. Create the tmp dir inside the gems directory
+  # to make sure the files will be on the same device. 
+  #
+  # [1] http://jira.codehaus.org/browse/JRUBY-3381
+  #  
   def tmp_path
-    # There is a bug in jruby with regard to renaming files
-    # across devices. Make sure the tmp dir is on the same
-    # dir as the gem files.
     if RUBY_PLATFORM =~ /java/
-      tmp_dir = File.join(options.public, 'tmp')
+      tmp_dir = File.join options.public, 'tmp'
       Dir.mkdir tmp_dir unless File.exist?(tmp_dir)
       ENV["TMPDIR"] = tmp_dir
     end
