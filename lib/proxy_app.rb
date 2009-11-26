@@ -17,15 +17,15 @@ EOS
   end
   
   get '/gems/*' do
-    filename = params[:splat].join('/')
-    gem_path = public_path.join('gems', filename)
-
-    unless gem_path.exist?
-      download_gem "#{options.source}/gems/#{filename}", gem_path
-      Gem::Indexer.new(options.public).generate_index
-    end
+    filename = File.join params[:splat]
+    gemfile_path = gem_path.join filename
     
-    send_file gem_path
+    unless gemfile_path.exist?      
+      download_gem "#{options.source}/gems/#{filename}", gemfile_path
+      update_gem_index
+    end
+
+    send_file gemfile_path
   end
 
   get "/*" do
@@ -54,7 +54,11 @@ EOS
   def public_path
     @public_path ||= Pathname.new(options.public)
   end
-
+  
+  def gem_path
+    @gem_path ||= public_path.join('gems')
+  end
+  
   def download_gem(url, local_path)
     Net::HTTP.get_response(URI.parse(url)) do |res| 
       case res
@@ -69,7 +73,15 @@ EOS
       end
     end
   end
-    
+  
+  def update_gem_index
+    if options.respond_to? :mock_gem_indexer
+      options.mock_gem_indexer
+    else
+      Gem::Indexer.new(options.public)
+    end.generate_index
+  end
+  
   def tmp_path_for(path)
     tmpfile = Pathname.new File.join(tmp_path, path)
     unless tmpfile.dirname.exist?
@@ -92,7 +104,6 @@ EOS
     end
     Dir.tmpdir
   end
-  alias set_tmp_path tmp_path
-  
+  alias set_tmp_path tmp_path  
 end
 
