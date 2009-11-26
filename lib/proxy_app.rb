@@ -10,7 +10,10 @@ class ProxyApp < Sinatra::Base
   set :environment, :production
   
   get '/' do
-    "Gem this!"
+    <<-EOS
+directory: #{options.public}
+gem_source: #{options.source}
+EOS
   end
   
   get '/gems/*' do

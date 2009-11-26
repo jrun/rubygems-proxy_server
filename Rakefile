@@ -15,6 +15,7 @@ begin
     gem.add_dependency 'rack', '~> 1.0.1'
     gem.add_dependency "sinatra", "~> 0.9.4"
     gem.add_development_dependency "rspec", "~> 1.2.9"
+    gem.add_development_dependency 'rack-test', '~> 0.5.2'
     gem.files = FileList['[a-zA-Z]*', 'bin/**/*', 'lib/**/*', 'spec/**/*']
   end
   Jeweler::GemcutterTasks.new
