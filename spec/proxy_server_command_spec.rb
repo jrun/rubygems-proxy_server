@@ -9,6 +9,23 @@ describe Gem::Commands::ProxyServerCommand do
     @cmd = Gem::Commands::ProxyServerCommand.new
   end
 
+  context 'short options' do
+    it '-d BASEDIR' do
+      @cmd.handle_options ['-d', '/tmp/rubygems-proxy-server/gems']
+      @cmd.options[:directory].should == '/tmp/rubygems-proxy-server/gems'
+    end
+    
+    it '-s URL' do
+      @cmd.handle_options ['-s', 'http://test.host/gems']
+      @cmd.options[:remote_source].should == 'http://test.host/gems'
+    end
+    
+    it '-p PORT'  do
+      @cmd.handle_options ['-p', '6688']
+      @cmd.options[:port].should == 6688
+    end
+  end
+  
   context '#execute' do
     it "should report an error when the gems directory option is not given" do
       use_ui @ui do
