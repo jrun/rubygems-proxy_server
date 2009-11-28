@@ -21,7 +21,7 @@ EOS
     gemfile_path = gem_path.join filename
     
     unless gemfile_path.exist? 
-      download_gem "#{options.source}/gems/#{filename}", gemfile_path
+      download_file "#{options.source}/gems/#{filename}", gemfile_path
       update_gem_index
     end
 
@@ -29,20 +29,12 @@ EOS
   end
 
   get "/*" do
-    path = params[:splat].join("/")
+    path = File.join params[:splat]
     upstream_url = options.source + "/" + path
-    tmpfile = tmp_path_for(path)
+    tmpfile = tmp_path_for path
+
+    download_file upstream_url, tmpfile
     
-    Net::HTTP.get_response(URI.parse(upstream_url)) do |res| 
-      case res
-      when Net::HTTPSuccess
-        File.open(tmpfile, "wb") do |out|
-          res.read_body {|chunk| out.write(chunk) }
-        end
-      else
-        raise Sinatra::NotFound, path
-      end
-    end
     send_file tmpfile
   end
   
@@ -59,7 +51,7 @@ EOS
     @gem_path ||= public_path.join('gems')
   end
   
-  def download_gem(url, local_path)
+  def download_file(url, local_path)
     Net::HTTP.get_response(URI.parse(url)) do |res| 
       case res
       when Net::HTTPSuccess
