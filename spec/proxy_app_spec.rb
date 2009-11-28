@@ -21,17 +21,7 @@ describe ProxyApp do
     @gemsdir = File.join @tmpdir, 'gems'
 
     FileUtils.mkdir_p @gemsdir
-        
-    ShamRack.at('www.test.host').sinatra do
-      get '/gems/*' do
-        "gem: #{File.join params[:splat]}"
-      end
-      
-      get '/*' do
-        "file: #{File.join params[:splat]}"
-      end
-    end
-    
+            
     @gem_source = 'http://www.test.host'
     @gem_indexer = mock(:gem_indexer)
     
@@ -45,6 +35,24 @@ describe ProxyApp do
   end
   
   context '/gems/*' do
+    before(:each) do
+      
+      @gem_source = ShamRack.at('www.test.host').sinatra do
+        def request_count; @@request_count end
+        @@request_count = 0
+
+        get '/gems/not_found' do
+          error 404, 'Not Found'
+        end
+        
+        get '/gems/*' do
+          @@request_count += 1
+          "gem: #{File.join params[:splat]}"
+        end
+      end
+      
+    end
+    
     it 'should download the gem from the upstream server' do
       @gem_indexer.should_receive(:generate_index)
       
@@ -59,9 +67,38 @@ describe ProxyApp do
       get '/gems/test-gem-0.1.0.gem'
       File.should exist(File.join(@tmpdir, 'gems/test-gem-0.1.0.gem'))
     end
+
+    it "should not download the gem a second time" do
+      @gem_indexer.should_receive(:generate_index)
+      
+      get '/gems/test-gem-0.1.0.gem'
+      get '/gems/test-gem-0.1.0.gem'
+
+      @gem_source.request_count.should == 1
+    end
+
+    it 'should respond with 404 Not Found when the gem source reports the same' do
+      get '/gems/not_found'
+      
+      last_response.should be_not_found
+      last_response.body.should == "\n"
+    end
+    
   end
 
   context '/*' do
+    before(:each) do
+      ShamRack.at('www.test.host').sinatra do
+        get '/not_found' do
+          error 404, 'Not Found'
+        end
+        
+        get '/*' do
+          "file: #{File.join params[:splat]}"
+        end
+      end      
+    end
+    
     it 'should download the file from the upstream server' do
       get '/some/random/file'
       last_response.should be_ok
@@ -71,7 +108,14 @@ describe ProxyApp do
     it "should write the file to the proxy's tmp directory" do
       get '/some/random/file'
       File.should exist(File.join(Dir.tmpdir, 'some/random/file'))
-    end    
+    end
+
+    it "should respond with 404 Not Found when the gem source reports the same" do
+      get '/not_found'
+
+      last_response.should be_not_found
+      last_response.body.should == "\n"
+    end
   end
 
   context '/' do

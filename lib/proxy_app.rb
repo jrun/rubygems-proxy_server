@@ -20,7 +20,7 @@ EOS
     filename = File.join params[:splat]
     gemfile_path = gem_path.join filename
     
-    unless gemfile_path.exist?      
+    unless gemfile_path.exist? 
       download_gem "#{options.source}/gems/#{filename}", gemfile_path
       update_gem_index
     end
@@ -69,7 +69,7 @@ EOS
       when Net::HTTPRedirection
         download_gem res['location'], local_path 
       else
-        raise Sinatra::NotFound, filename
+        raise Sinatra::NotFound, url
       end
     end
   end
