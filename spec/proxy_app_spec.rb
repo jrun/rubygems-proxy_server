@@ -62,7 +62,7 @@ describe ProxyApp do
   end
 
   context '/*' do
-    it 'should download teh file from the upstream server' do
+    it 'should download the file from the upstream server' do
       get '/some/random/file'
       last_response.should be_ok
       last_response.body.should == 'file: some/random/file'
