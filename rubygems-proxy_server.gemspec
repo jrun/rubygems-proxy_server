@@ -4,12 +4,12 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{rubygems-proxy-server}
+  s.name = %q{rubygems-proxy_server}
   s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["jrun"]
-  s.date = %q{2009-11-26}
+  s.date = %q{2009-11-28}
   s.description = %q{A gem source proxy}
   s.email = %q{jeremy.burks@gmail.com}
   s.extra_rdoc_files = [
@@ -24,14 +24,14 @@ Gem::Specification.new do |s|
      "lib/proxy_app.rb",
      "lib/proxy_server_command.rb",
      "lib/rubygems_plugin.rb",
-     "rubygems-proxy-server.gemspec",
+     "rubygems-proxy_server.gemspec",
      "spec/mockgemui.rb",
      "spec/proxy_app_spec.rb",
      "spec/proxy_server_command_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/jrun/rubygems-proxy-server}
+  s.homepage = %q{http://github.com/jrun/rubygems-proxy_server}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}

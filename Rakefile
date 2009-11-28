@@ -6,11 +6,11 @@ PROXY_SERVER_VERSION = File.read('VERSION')
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "rubygems-proxy-server"
+    gem.name = "rubygems-proxy_server"
     gem.summary = "A gem source proxy."
     gem.description = "A gem source proxy"
     gem.email = "jeremy.burks@gmail.com"
-    gem.homepage = "http://github.com/jrun/rubygems-proxy-server"
+    gem.homepage = "http://github.com/jrun/rubygems-proxy_server"
     gem.authors = ["jrun"]
     gem.add_dependency 'rack', '~> 1.0.1'
     gem.add_dependency "sinatra", "~> 0.9.4"
@@ -43,7 +43,7 @@ task :default => :spec
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "rubygems-proxy-server #{PROXY_SERVER_VERSION}"
+  rdoc.title = "rubygems-proxy_server #{PROXY_SERVER_VERSION}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
@@ -53,15 +53,15 @@ namespace :gem do
   task :reinstall do
     Rake::Task[:build].invoke
     if gem_installed?
-      system "gem uninstall rubygems-proxy-server"
+      system "gem uninstall rubygems-proxy_server"
     end
-    system "gem install --no-rdoc --no-ri -l #{File.dirname(__FILE__)}/pkg/rubygems-proxy-server-#{PROXY_SERVER_VERSION}"
+    system "gem install --no-rdoc --no-ri -l #{File.dirname(__FILE__)}/pkg/rubygems-proxy_server-#{PROXY_SERVER_VERSION}"
   end
 end
 
 def gem_installed?
-  (system("gem list rubygems-proxy-server -l") || "")  =~
-    /rubygems-proxy-server-#{PROXY_SERVER_VERSION}/
+  (system("gem list rubygems-proxy_server -l") || "")  =~
+    /rubygems-proxy_server-#{PROXY_SERVER_VERSION}/
 end
 
 begin
