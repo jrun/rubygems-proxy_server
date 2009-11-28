@@ -107,7 +107,7 @@ describe ProxyApp do
 
     it "should write the file to the proxy's tmp directory" do
       get '/some/random/file'
-      File.should exist(File.join(Dir.tmpdir, 'some/random/file'))
+      File.should exist(File.join(@tmpdir, 'rubygems-proxy_server-cache/some/random/file'))
     end
 
     it "should respond with 404 Not Found when the gem source reports the same" do

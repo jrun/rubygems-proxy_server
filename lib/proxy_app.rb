@@ -82,20 +82,20 @@ EOS
     tmpfile
   end
   
+  # == Note
+  #
   # There is a bug in JRuby [1]  with regard to renaming files
-  # across devices. Create the tmp dir inside the gems directory
+  # across devices. Create the tmp dir inside the public directory
   # to make sure the files will be on the same device. 
   #
   # [1] http://jira.codehaus.org/browse/JRUBY-3381
   #  
   def tmp_path
-    if RUBY_PLATFORM =~ /java/
-      tmp_dir = File.join options.public, 'tmp'
-      Dir.mkdir tmp_dir unless File.exist?(tmp_dir)
-      ENV["TMPDIR"] = tmp_dir
-    end
-    Dir.tmpdir
+    tmpdir = File.join options.public, 'rubygems-proxy_server-cache'
+    Dir.mkdir tmpdir unless File.exist?(tmpdir)
+    ENV["TMPDIR"] = tmpdir
+
+    tmpdir
   end
-  alias set_tmp_path tmp_path  
 end
 
