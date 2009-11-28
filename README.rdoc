@@ -2,17 +2,56 @@
 
 A gem source proxy.
 
-== Note on Patches/Pull Requests
- 
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but
-   bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
+Most useful in an intranet scenario. Currently, it is assumed that the localhost has 
+direct access to the Internet. A future version will have the ability to access the 
+Internet via an authenticated proxy.
+
+As gem's are requested they are downloaded and re-indexed on the localhost. Future requests 
+will serve the local gem directly. A secondary gem source can be set to point to the internal 
+server. Most likely an internal gem server already exists for internal gem deployment. Note, 
+in the case of an existing internal gem server, you must have both the proxy_server and internal
+gem server set as gem sources otherwise the rubygems client will not be able to find the 
+internal gems. Each gem source will have separate indexes.
+
+== Usage
+
+Usage: gem proxy_server [options]
+
+  Options:
+    -d, --directory BASEDIR          Repository base dir containing gems subdir.
+    -s, --source URL                 The remote source for gems.
+    -p, --port PORT                  The port of the gem source.
+
+  Common Options:
+    -h, --help                       Get help on this command
+    -V, --[no-]verbose               Set the verbose level of output
+    -q, --quiet                      Silence commands
+        --config-file FILE           Use this config file instead of default
+        --backtrace                  Show stack backtrace on errors
+        --debug                      Turn on Ruby debugging
+
+
+  Summary:
+    Half gem source, half gem proxy.
+
+  Description:
+    The directory given via -d, --directory is expected to be a gem
+    server directory. See `gem help generate_index` for the requirements
+    for that directory.
+    
+      $ gem proxy_server -d /var/www/gems
+
+  Defaults:
+    --port 3027 --source http://gemcutter.org
+
+
+== TODOs
+
+* Use HTTP_PROXY if present. Other ways to support proxies?
+* Add --rack-config option that will print a config.ru to be used for deployments besides `gem proxy_server`
+* Investigate the possibility of merging local gem indexes with upstream indexes. The idea being one gem source could be used for intranet and internet gems.
+* Multiple upstream gem sources
 
 == Copyright
 
-Copyright (c) 2009 jrun. See LICENSE for details.
+Copyright (c) 2009 Jeremy Burks. See LICENSE for details.
