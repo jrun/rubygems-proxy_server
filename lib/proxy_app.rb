@@ -59,7 +59,7 @@ EOS
           res.read_body {|chunk| f.write(chunk) }
         end
       when Net::HTTPRedirection
-        download_gem res['location'], local_path 
+        download_file res['location'], local_path 
       else
         raise Sinatra::NotFound, url
       end

@@ -42,7 +42,11 @@ describe ProxyApp do
         @@request_count = 0
 
         get '/gems/not_found' do
-          error 404, 'Not Found'
+          not_found
+        end
+        
+        get '/gems/redirect-0.1.0.gem' do
+          redirect 'http://www.test.host/gems/from-redirect-0.1.0.gem'
         end
         
         get '/gems/*' do
@@ -84,6 +88,15 @@ describe ProxyApp do
       last_response.body.should == "\n"
     end
     
+    it "should follow a redirect" do
+      @gem_indexer.should_receive(:generate_index)
+      
+      get '/gems/redirect-0.1.0.gem'
+
+      last_response.should be_ok
+      last_response.body.should == 'gem: from-redirect-0.1.0.gem'
+      File.should exist(File.join(@tmpdir, 'gems/redirect-0.1.0.gem'))
+    end
   end
 
   context '/*' do
