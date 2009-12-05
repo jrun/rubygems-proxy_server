@@ -17,6 +17,7 @@ begin
     gem.add_development_dependency "rspec", "~> 1.2.9"
     gem.add_development_dependency 'rack-test', '~> 0.5.2'
     gem.add_development_dependency 'sham_rack', '~> 1.1.2'
+    gem.add_development_dependency 'grancher', '> 0'
     gem.files = FileList['[a-zA-Z]*', 'bin/**/*', 'lib/**/*', 'spec/**/*']
   end
   Jeweler::GemcutterTasks.new
@@ -37,16 +38,8 @@ Spec::Rake::SpecTask.new(:rcov) do |spec|
 end
 
 task :spec => :check_dependencies
-
 task :default => :spec
-
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "rubygems-proxy_server #{PROXY_SERVER_VERSION}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
+task :build => :spec
 
 namespace :gem do
   desc "Build and reinstalls the gem locally"
@@ -76,9 +69,11 @@ end
 begin
   require 'grancher/task'
   Grancher::Task.new do |g|
+    Rake::Task['yard'].invoke    
     g.branch = 'gh-pages'
     g.push_to = 'origin'
     g.directory 'doc'
   end
 rescue LoadError
+  tas
 end

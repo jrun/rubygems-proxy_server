@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["jrun"]
-  s.date = %q{2009-11-29}
+  s.date = %q{2009-12-04}
   s.description = %q{A gem source proxy}
   s.email = %q{jeremy.burks@gmail.com}
   s.extra_rdoc_files = [
@@ -53,12 +53,14 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rspec>, ["~> 1.2.9"])
       s.add_development_dependency(%q<rack-test>, ["~> 0.5.2"])
       s.add_development_dependency(%q<sham_rack>, ["~> 1.1.2"])
+      s.add_development_dependency(%q<grancher>, ["> 0"])
     else
       s.add_dependency(%q<rack>, ["~> 1.0.1"])
       s.add_dependency(%q<sinatra>, ["~> 0.9.4"])
       s.add_dependency(%q<rspec>, ["~> 1.2.9"])
       s.add_dependency(%q<rack-test>, ["~> 0.5.2"])
       s.add_dependency(%q<sham_rack>, ["~> 1.1.2"])
+      s.add_dependency(%q<grancher>, ["> 0"])
     end
   else
     s.add_dependency(%q<rack>, ["~> 1.0.1"])
@@ -66,6 +68,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rspec>, ["~> 1.2.9"])
     s.add_dependency(%q<rack-test>, ["~> 0.5.2"])
     s.add_dependency(%q<sham_rack>, ["~> 1.1.2"])
+    s.add_dependency(%q<grancher>, ["> 0"])
   end
 end
 
