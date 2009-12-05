@@ -72,3 +72,13 @@ rescue LoadError
     abort "YARD is not available. In order to run yardoc, you must: sudo gem install yard"
   end
 end
+
+begin
+  require 'grancher/task'
+  Grancher::Task.new do |g|
+    g.branch = 'gh-pages'
+    g.push_to = 'origin'
+    g.directory 'doc'
+  end
+rescue LoadError
+end
