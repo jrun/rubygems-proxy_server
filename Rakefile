@@ -75,5 +75,7 @@ begin
     g.directory 'doc'
   end
 rescue LoadError
-  tas
+  task :yardoc do
+    abort "publish is not available. In order to run publish, you must: sudo gem install grancher"
+  end
 end
