@@ -8,7 +8,7 @@ begin
     gem.summary = "A gem source proxy."
     gem.description = "A gem source proxy"
     gem.email = "jeremy.burks@gmail.com"
-    gem.homepage = "http://github.com/jrun/rubygems-proxy_server"
+    gem.homepage = "http://jrun.github.com/rubygems-proxy_server"
     gem.authors = ["jrun"]
     gem.add_dependency 'rack', '~> 1.0.1'
     gem.add_dependency "sinatra", "~> 0.9.4"
