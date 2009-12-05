@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
      "lib/proxy_app.rb",
      "lib/proxy_server_command.rb",
      "lib/rubygems_plugin.rb",
+     "rubygems-proxy_server.gemspec",
      "spec/mockgemui.rb",
      "spec/proxy_app_spec.rb",
      "spec/proxy_server_command_spec.rb",
