@@ -1,8 +1,6 @@
 require 'rubygems'
 require 'rake'
 
-PROXY_SERVER_VERSION = File.read('VERSION')
-
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
@@ -17,9 +15,31 @@ begin
     gem.add_development_dependency "rspec", "~> 1.2.9"
     gem.add_development_dependency 'rack-test', '~> 0.5.2'
     gem.add_development_dependency 'sham_rack', '~> 1.1.2'
+    gem.add_development_dependency 'yard', '~> 0.4.0'    
     gem.add_development_dependency 'grancher', '> 0'
     gem.files = FileList['[a-zA-Z]*', 'bin/**/*', 'lib/**/*', 'spec/**/*']
+
+    desc "Install development dependencies."
+    task :setup do
+      gems = ::Gem::SourceIndex.from_installed_gems
+      gem.dependencies.each do |dep|
+        if gems.find_name(dep.name, dep.version_requirements).empty?
+          puts "Installing dependency: #{dep}"
+          system %Q|gem install #{dep.name} -v "#{dep.version_requirements}"  --development|
+        end
+      end
+    end
+    
+    desc "Build and reinstall the gem locally."
+    task :reinstall => :build  do
+      version = File.read('VERSION')
+      if (system("gem list #{gem.name} -l") || "")  =~ /#{gem.name}-#{version}/
+        system "gem uninstall #{gem.name}"
+      end
+      system "gem install --no-rdoc --no-ri -l pkg/#{gem.name}-#{version}"
+    end
   end
+  
   Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
@@ -39,43 +59,26 @@ end
 
 task :spec => :check_dependencies
 task :default => :spec
-task :build => :spec
-
-namespace :gem do
-  desc "Build and reinstalls the gem locally"
-  task :reinstall do
-    Rake::Task[:build].invoke
-    if gem_installed?
-      system "gem uninstall rubygems-proxy_server"
-    end
-    system "gem install --no-rdoc --no-ri -l #{File.dirname(__FILE__)}/pkg/rubygems-proxy_server-#{PROXY_SERVER_VERSION}"
-  end
-end
-
-def gem_installed?
-  (system("gem list rubygems-proxy_server -l") || "")  =~
-    /rubygems-proxy_server-#{PROXY_SERVER_VERSION}/
-end
+task :build => [:spec, :yard]
 
 begin
   require 'yard'
   YARD::Rake::YardocTask.new
 rescue LoadError
-  task :yardoc do
-    abort "YARD is not available. In order to run yardoc, you must: sudo gem install yard"
+  task :yard do
+    abort "YARD is not available. Run 'rake setup' to install all development dependencies."
   end
 end
 
 begin
   require 'grancher/task'
   Grancher::Task.new do |g|
-    Rake::Task['yard'].invoke    
     g.branch = 'gh-pages'
     g.push_to = 'origin'
     g.directory 'doc'
   end
 rescue LoadError
-  task :yardoc do
-    abort "publish is not available. In order to run publish, you must: sudo gem install grancher"
+  task :publish do
+    abort "grancher is not available. Run 'rake setup' to install all development dependencies."
   end
 end
