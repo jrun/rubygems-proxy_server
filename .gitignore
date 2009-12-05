@@ -21,3 +21,4 @@ pkg
 ## PROJECT::SPECIFIC
 doc
 .yardoc
+rubygems-proxy_server.gemspec
